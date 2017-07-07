@@ -9,25 +9,15 @@ import com.itextpdf.text.Element;
  * 2009-11-12
  */
 public class PdfHeader {
-	/**����ҳü��Ĭ�ϴ�СΪ12.0f*/
 	private static final float DEFAULT_SIZE=12.0f;
-	/**����ҳü�Ķ��뷽ʽΪ�м����*/
 	public static final int CENTER=Element.ALIGN_CENTER;
-	/**����ҳü�Ķ��뷽ʽΪ�����*/
 	public static final int LEFT=Element.ALIGN_LEFT;
-	/**����ҳü�Ķ��뷽ʽΪ�Ҷ���*/
 	public static final int RIGHT=Element.ALIGN_RIGHT;
-	/**ҳü����*/
 	private String text=" ";
-	/**���뷽ʽ*/
 	private int align=RIGHT;
-	/** �Ƿ���� */
 	private boolean bold=false;
-	/** �����С */
 	private float fontSize = DEFAULT_SIZE;
-	/**������ɫ*/
 	private Color color=Color.BLACK;
-	/**ҳü����ɫ*/
 	private Color backGroundColor=Color.white;
 	
 	public int getAlign() {

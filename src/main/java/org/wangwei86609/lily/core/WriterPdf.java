@@ -39,10 +39,7 @@ public abstract class WriterPdf {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * �ر�document����
-	 * @throws Exception
-	 */
+
 	public void CloseDocument() throws Exception{
 		try {
 			if(document!=null){

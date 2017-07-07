@@ -18,11 +18,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import jxl.Image;
 
-/**
- * �Զ��� PDF �¼�
- * @author newapps
- * 2009-11-12
- */
 public class PageEvent extends PdfPageEventHelper {
 	/** An Image that goes in the header. */
     public Image headerImage;
@@ -34,114 +29,53 @@ public class PageEvent extends PdfPageEventHelper {
     private float footerHeight;
     /** A template that will hold the total number of pages. */
     private PdfTemplate tpl;
-    /** ҳ���������� */
     private BaseFont font;
-    /** ������ҳ���Ŀո��壬�� openDocument ʱ���� */
     private String blankTextChars = "    ";
-    /**ҳ��������С*/
     private float pageNumberSize;
-    /** �����ʼ�� top margin ֵ */
     private float _topMargin;
-    /** �����ʼ�� bottom margin ֵ */
     private float _bottomMargin;
-    /** �Ƿ����� margin */
     private boolean resetMargin;
-    /**ҳ����ʽ*/
     private String pageNumberStyle;
-    /**ҳ��*/
     private PdfFooter footer;
-    /**ҳü*/
     private PdfHeader header;
-    /**ҳ����Ϣ*/
     private HeaderText headerText;
-    /**����ҳ����Ϣ*/
 	public void setFooter(PdfFooter footer) {
 		this.footer = footer;
 	}
-	/**����ҳ����Ϣ*/
 	public void setHeader(PdfHeader header) {
 		this.header = header;
 	}
-	/**
-	 * Ĭ�Ϲ��캯��
-	 */
+
 	public PageEvent() {}
-	/**
-	 * ͨ��ҳü��ҳ��������ö���
-	 * @param footer ҳ��
-	 * @param header ҳü
-	 */
+
 	public PageEvent(PdfFooter footer, PdfHeader header) {
 		super();
 		this.footer = footer;
 		this.header = header;
 	}
-	/**
-	 * ����ҳ�������С
-	 * @param size
-	 */
+
 	public void setPageNumberSize(float size) {
 		pageNumberSize = size;
 		if (size > footerHeight) footerHeight = size;
 	}		
-//	/**
-//	 * �����Ƿ�������һ��ҳͷ
-//	 * @param skip
-//	 */
-//	public void setSkipFirstWrite(boolean skip) {
-//		this.skipFirstWrite = skip;
-//	}
-//	/**
-//	 * ����ҳ��
-//	 * @param footerTexts
-//	 */
-//	public void setFooterText(List footerTexts) {
-//		this.footerTexts = footerTexts;
-//		if (footerTexts != null && footerTexts.size() > 0) {
-//			footer.setHasFooter(true);
-//			Iterator iter = footerTexts.iterator();
-//			// �ҳ���������size
-//			while (iter.hasNext()) {
-//				PdfFooter text = (PdfFooter) iter.next();
-//				if (text.getFontSize() > footerHeight)
-//					footerHeight = text.getFontSize();
-//			}
-//			if (footerHeight < pageNumberSize)
-//				footerHeight = pageNumberSize;
-//		} else {
-//			footer.setHasFooter(false);
-//			footerHeight = 0.0f;
-//		}
-//	}
-//	
-	/**
-	 * ����ҳü������
-	 */
+
+
 	public void setHeaderText(HeaderText headerText) {
 		this.headerText = headerText;
 	}
-	/**
-	 * ����ҳ����ʾ����ʽ
-	 * @param style
-	 */
+
 	public void setPageNumberStyle(String style) {
 		if (style != null & style.indexOf(PdfFooter.SIGN_PAGE_NUMBER) >= 0) {
 			pageNumberStyle = style;
 			footer.setShowTotalNumber((style.indexOf(PdfFooter.SIGN_TOTAL_NUMBER) > 0));
 		}
 	}
-	/**
-	 * �Ƿ����� margin
-	 * @param reset
-	 */
+
 	void setResetMargin(boolean reset) {
 		resetMargin = reset;
 	}
 
-	/**
-	 * ���� margin
-	 * @param document - com.lowagie.text.Document
-	 */
+
 	private void setMargin(Document document) {
 		float leftMargin = document.leftMargin();
 		float rightMargin = document.rightMargin();
@@ -151,11 +85,7 @@ public class PageEvent extends PdfPageEventHelper {
 		document.setMargins(leftMargin, rightMargin, topMargin, bottomMargin);
 	}
 
-	// ------------------------------------------ event implementation
-	
-	/**
-	 * ҳ�����¼�
-	 */
+
 	@Override
     public void onEndPage(PdfWriter writer, Document document) {
         Rectangle page = document.getPageSize();
@@ -164,19 +94,17 @@ public class PageEvent extends PdfPageEventHelper {
             cb.saveState();
             // compose the footer
             String text = this.pageNumberStyle.replaceAll(PdfFooter.SIGN_PAGE_NUMBER, String.valueOf(writer.getPageNumber()));
-            int totalPagePos = -1; // ��ҳ����text�е�λ��
+            int totalPagePos = -1; //
             if (footer.isShowTotalNumber()) {
                 totalPagePos = text.indexOf(PdfFooter.SIGN_TOTAL_NUMBER);
                 text = text.replaceAll(PdfFooter.SIGN_TOTAL_NUMBER, blankTextChars);
             }
-            // ����ռ�Ŀ��
+            //
             float textSize = font.getWidthPoint(text, pageNumberSize);
-            // Y ����
             float textBase = document.bottomMargin() - footerHeight;
             cb.beginText();
             cb.setFontAndSize(font, pageNumberSize);
 
-            // ���� X ����
             float x = 0.0f;
             if (footer.getPageNumberAlign() == Element.ALIGN_CENTER)
                 x = (page.getWidth() - textSize) / 2;
@@ -202,7 +130,6 @@ public class PageEvent extends PdfPageEventHelper {
         }
 
         if (footer.isHasFooter()) {
-        	// ��ʾ page footer
         	cb.saveState();
         	float x = 0.0f;
         	float textBase = document.bottomMargin() - footerHeight;
@@ -229,20 +156,13 @@ public class PageEvent extends PdfPageEventHelper {
     		cb.restoreState();
         	}
         }
-        // reset skipFirstWrite
-    //    skipFirstWrite = false;
         
 		if (resetMargin) {
-			// ���� margin
 			setMargin(document);
 			resetMargin = false;
 		}
-		// not empty document
 	}
-	
-	/**
-	 * ���ĵ��¼�
-	 */
+
 	@Override
     public void onOpenDocument(PdfWriter writer, Document document) {
         try {
@@ -293,7 +213,6 @@ public class PageEvent extends PdfPageEventHelper {
                 for (int i = 0; i < needSpaceChars; i++)
                     blankTextChars += " ";
         	}
-            // �����ʼ�� top��bottom margin
         	_topMargin = document.topMargin();
         	_bottomMargin = document.bottomMargin();
         }
@@ -302,9 +221,6 @@ public class PageEvent extends PdfPageEventHelper {
         }
 	}
 
-	/**
-	 * Start page �¼�
-	 */
 	@Override
     public void onStartPage(PdfWriter writer, Document document) {
         if (table!=null) {
@@ -316,22 +232,18 @@ public class PageEvent extends PdfPageEventHelper {
         }
 	}
 
-	/**
-	 * Close document �¼�
-	 */
     @Override
     public void onCloseDocument(PdfWriter writer, Document document) {
     	if (footer.isShowTotalNumber() && footer.isShowPageNumber() && tpl != null) {
 	        tpl.beginText();
 	        tpl.setFontAndSize(font, pageNumberSize);
-            // ����λ�� (x ����)
             float x = 0.0f;
             int totalPage = writer.getPageNumber() - 1;
-            if (totalPage < 10) // 1 λ��
+            if (totalPage < 10) // 
                 x += font.getWidthPoint("00", pageNumberSize) / 2;
-            else if (totalPage < 100) // 2 λ��
+            else if (totalPage < 100) //
                 x += font.getWidthPoint("0", pageNumberSize) / 2;
-            else if (totalPage > 1000) // 4 λ�������
+            else if (totalPage > 1000) // 
                 x -= font.getWidthPoint("0", pageNumberSize) / 2;
             
 	        tpl.setTextMatrix(x, 0);

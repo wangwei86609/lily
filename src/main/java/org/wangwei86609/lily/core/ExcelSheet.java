@@ -8,31 +8,17 @@ import jxl.Cell;
 import jxl.Image;
 import jxl.Range;
 import jxl.Sheet;
-/**
- * ��������������
- * @author newapps
- * 2009-11-8
- */
+
 public class ExcelSheet{
-	/**����������*/
 	private int cols;
-	/**�����������еĿ��*/
 	private int[] cols_Width;
-	/**����������*/
 	private int rows;
-	/**�����������еĸ߶�*/
 	private int[] rows_Height;
-	/**��������ͼƬ*/
 	private List<Image> images=new ArrayList<Image>();
-	/**����������*/
 	private Sheet sheet;
-	/**�ϲ���Ԫ��ķ�Χ*/
 	private Range[] ranges;
-	/**����������*/
 	private String sheetName;
-	/**���Ͻǵ�����*/
 	private Map<String,Cell> mergeCell;
-	/**���кϲ���Ԫ����ռ�ĸ���*/
 	private int numberCells;
 	
 	public int getNumberCells() {
@@ -96,10 +82,7 @@ public class ExcelSheet{
 		this.sheet=sheet;
 		readSheet();
 	}
-	/**
-	 * ���ù���������
-	 *
-	 */
+
 	private void readSheet(){
 		this.setCols(sheet.getColumns());
 		this.setRows(sheet.getRows());
@@ -111,10 +94,7 @@ public class ExcelSheet{
 		this.mergeCell=getMCell();
 		this.setNumberCells(getCells());
 	}
-	/**
-	 * ���п����鸳ֵ
-	 * @return Int������
-	 */
+
 	private int[] colsWidth(){
 		cols_Width=new int[this.getCols()];
 		for(int i=0;i<sheet.getColumns();i++){
@@ -122,10 +102,7 @@ public class ExcelSheet{
 		}
 		return cols_Width;
 	}
-	/**
-	 * ���иߵ����鸳ֵ
-	 * @return Int������
-	 */
+
 	private int[] rowsHeight(){
 		rows_Height=new int[this.getRows()];
 		for(int i=0;i<sheet.getRows();i++){
@@ -133,10 +110,7 @@ public class ExcelSheet{
 		}
 		return rows_Height;
 	}
-	/**
-	 * ��ȡ��ǰ����������ͼƬ
-	 * @return List������
-	 */
+
 	private List<Image> find_Image(){
 		for(int i=0;i<sheet.getNumberOfImages();i++){
 			jxl.Image jxlImage=sheet.getDrawing(i);
